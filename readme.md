@@ -8,6 +8,4 @@ DB_HOST=db_host
 - for frontend :
 use https://michelre.github.io/dwj-p6/
 
-- for back end :
-clone this repository
-launch node server on port 3000
+- for back end :clone this repository and launch node server on port 3000
