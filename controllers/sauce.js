@@ -82,11 +82,11 @@ exports.deleteSauce = (req, res, next) => {
 
 exports.voteSauce = (req, res, next) => {
   if (req.body.like === 1) { 
-    Sauce.updateOne({ _id: req.params.id }, { $inc: { likes: req.body.like++}, $push: { usersLiked: req.body.userId } })
+    Sauce.updateOne({ _id: req.params.id }, { $inc: { likes: req.body.like }, $push: { usersLiked: req.body.userId } })
       .then(() => res.status(200).json({ message: 'Vote up' }))
       .catch(error => res.status(400).json({ error }))
   } else if (req.body.like === -1) { 
-    Sauce.updateOne({ _id: req.params.id }, { $inc: { dislikes: req.body.like++}, $push: { usersDisliked: req.body.userId } }) 
+    Sauce.updateOne({ _id: req.params.id }, { $inc: { dislikes: (req.body.like*-1) }, $push: { usersDisliked: req.body.userId } }) 
       .then(() => res.status(200).json({ message: 'Vote down' }))
       .catch(error => res.status(400).json({ error }))
   } else  if (req.body.like === 0) {
@@ -97,7 +97,7 @@ exports.voteSauce = (req, res, next) => {
               .then(() => { res.status(200).json({ message: 'Delete like' }) })
               .catch(error => res.status(400).json({ error }))
         } else if (sauce.usersDisliked.includes(req.body.userId)) {
-            Sauce.updateOne({ _id: req.params.id }, { $pull: { usersDisliked: req.body.userId }, $inc: { dislikes: 1 } })
+            Sauce.updateOne({ _id: req.params.id }, { $pull: { usersDisliked: req.body.userId }, $inc: { dislikes: -1 } })
               .then(() => { res.status(200).json({ message: 'Delete dislike' }) })
               .catch(error => res.status(400).json({ error }))
         }
