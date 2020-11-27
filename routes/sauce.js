@@ -4,6 +4,8 @@ const sauceCtrl = require('../controllers/sauce')
 const auth = require('../middleware/auth')
 const multer = require('../middleware/multer-config')
 
+
+// ajout des middlewares auth et multer 
 router.delete('/:id', auth, sauceCtrl.deleteSauce)
 router.put('/:id', auth, multer, sauceCtrl.modifySauce)
 router.post('/', auth, multer, sauceCtrl.createSauce)
