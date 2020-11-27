@@ -7,8 +7,13 @@ exports.signup = (req, res, next) => {
     //hash du password avec bcrypt
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
+            //encodage en base64 de l'email
+            const str = req.body.email;
+            const buff = Buffer.from(str, 'utf-8');
+            const base64 = buff.toString('base64');
+
             const user = new User({
-                email: req.body.email,
+                email: base64,
                 password: hash
             });
             //sauvegarde dans la bdd de l'email / et du hash password
@@ -27,11 +32,15 @@ exports.signup = (req, res, next) => {
 
 //reception d'une demande de login (post)
 exports.login = (req, res, next) => {
+    //encodage en base64 de l'email
+    const str = req.body.email;
+    const buff = Buffer.from(str, 'utf-8');
+    const base64 = buff.toString('base64');
+
     User.findOne({
-            email: req.body.email
+            email: base64
         })
         .then(user => {
-            //si l'email recut n'existe pas
             if (!user) {
                 return res.status(401).json({
                     error: 'Identifiants incorrects!'
